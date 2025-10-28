@@ -1,0 +1,138 @@
+.cart-container {
+  position: relative;
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 20px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.back-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 1.2rem;
+  color: #555;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.back-arrow {
+  color: #000;
+  font-size: 0.8rem;
+}
+.back-btn:hover {
+  transform: translateX(-2px);
+}
+
+.cart-title {
+  text-align: center;
+  color: #333;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+.cart-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 10px 15px;
+}
+
+.cart-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.cart-item-details {
+  flex: 1;
+  margin-left: 15px;
+}
+
+.cart-item-details h4 {
+  margin: 0;
+  color: #333;
+}
+
+.cart-item-details p {
+  margin: 2px 0;
+  color: #777;
+}
+
+.cart-item-quantity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cart-item-quantity button {
+  background: #ff6600;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cart-item-quantity button:hover {
+  background: #e05500;
+}
+
+.cart-item-total {
+  font-weight: bold;
+  color: #222;
+  min-width: 70px;
+  text-align: right;
+}
+.card-row input{
+width: 50%;
+}
+
+.cart-summary {
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  text-align: right;
+}
+
+.cart-summary p {
+  font-size: 1rem;
+  color: #555;
+  margin: 5px 0;
+}
+
+.cart-summary h3 {
+  margin-top: 10px;
+  color: #111;
+}
+
+.pay-now-btn {
+  margin-top: 15px;
+  padding: 10px 25px;
+  background: #ff6600;
+  color: white;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.pay-now-btn:hover {
+  background: #e05500;
+}

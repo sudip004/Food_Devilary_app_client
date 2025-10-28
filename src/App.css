@@ -1,0 +1,43 @@
+
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+:root{
+    --main:#212121;
+    --gold-finger:#F2BD12;
+    --eye-ball:#FFFDF7;
+    --hint-yellow:#FCF1CC;
+    --pure-white:#FFF;
+    --font-size:100%;
+}
+
+body{
+    font-family: 'Inter', 'Roboto Condensed', 'Rubik', sans-serif;
+    background: var(--eye-ball);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
