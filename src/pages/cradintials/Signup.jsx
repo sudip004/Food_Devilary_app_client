@@ -25,7 +25,7 @@ const Signup = () => {
     const handelSignUp = async(e) => {
         e.preventDefault();
         // Handle signup logic here
-        const res = await axios.post('http://localhost:8080/api/signup', {
+        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
             username: userData.username,
             email: userData.email,
             password: userData.password
@@ -39,12 +39,12 @@ const Signup = () => {
     const handelLogin = async(e) => {
         e.preventDefault();
         // Handle login logic here
-        const token = await axios.post('http://localhost:8080/api/login', {
+        const token = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, {
             email: userData.email,
             password: userData.password
         }, { withCredentials: true })
         
-       const curUser = await axios.get('http://localhost:8080/api/me', { withCredentials: true })
+       const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
        setuser(curUser.data);
        navigate('/')
         

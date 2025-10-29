@@ -8,7 +8,7 @@ import CartPage from './pages/Cart/Cart';
 import PaymentPage from './pages/payment/PaymentPage';
 import Signup from './pages/cradintials/Signup';
 import History from './pages/History/History';
-import Homee from './components/Demo';
+
 
 const App = () => {
   return (
@@ -51,7 +51,6 @@ const App = () => {
         <Route path='/payment' element={<PaymentPage/>} />
         <Route path='/login' element={<Signup/>} />
         <Route path='/history' element={<History/>} />
-        <Route path='/demo' element={<Homee/>} />
       </Routes>
     </div>
   )
