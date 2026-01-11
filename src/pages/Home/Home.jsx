@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react'
 import "./home.css"
-import "../../components/Demo.css"
+import "../../components/demo.css"
 import {  Link, useNavigate } from "react-router-dom"
 import img1 from "../../assets/delivery-boy.png"
 import orderimg from "../../assets/easy-to-order.png"
@@ -63,7 +63,11 @@ const Home = () => {
 
     useEffect(() => {
         if (!user) {
+            console.log("THis is home part------------------");
+            
             fetchUser();
+            console.log("user is by home",user);
+            
         }
         const menuSection = document.getElementById("home");
         if (menuSection) {

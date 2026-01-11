@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import {
   MapContainer,
@@ -10,90 +10,143 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
+// Leaflet icon fix
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
+
+// Map size
 const containerStyle = {
   width: "100%",
   height: "400px",
 };
 
 // Custom icons
-const restaurantIcon = L.icon({
+const restaurantIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png",
   iconSize: [35, 35],
+  iconAnchor: [17, 35],
 });
 
-const customerIcon = L.icon({
+const customerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/3177/3177440.png",
   iconSize: [35, 35],
+  iconAnchor: [17, 35],
 });
 
-const deliveryIcon = L.icon({
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/869/869636.png",
-  iconSize: [35, 35],
+const deliveryIcon = new L.Icon({
+  iconUrl: "https://cdn-icons-png.flaticon.com/512/2203/2203183.png",
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
-const DeliveryMap = ({ orderId }) => {
+
+
+const DeliveryMap = ({ orderId, onDelivered }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
+    let intervalId;
+
     const fetchLocation = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/${orderId}/location`);
+        const res = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/orders/${orderId}/updatelocation`
+        );
+
         setData(res.data);
+
+        if (res.data.orderStatus === "Delivered") {
+          clearInterval(intervalId);
+
+          
+          onDelivered?.();
+        }
       } catch (error) {
-        console.error("Error fetching location:", error);
+        console.error(error);
       }
     };
 
     fetchLocation();
-    const interval = setInterval(fetchLocation, 10000); // every 10 seconds
-    return () => clearInterval(interval);
-  }, [orderId]);
+    intervalId = setInterval(fetchLocation, 10000);
 
-  // Example fixed points (Santipur area)
-  const restaurant = { lat: 22.963, lng: 88.437 };
-  const customer = { lat: 22.935, lng: 88.430 };
+    return () => clearInterval(intervalId);
+  }, [orderId, onDelivered]);
+
+
+  // ✅ Hooks are ALWAYS called
+  const restaurant = useMemo(() => {
+    if (!data) return null;
+    return {
+      // lat: data.restaurantLocation.latitude,
+      // lng: data.restaurantLocation.longitude,
+       lat: 23.33247947692871,
+       lng: 88.32687377929688,
+    };
+  }, [data]);
+
+  const customer = useMemo(() => {
+    if (!data) return null;
+    return {
+      // lat: data.customerLocation.latitude,
+      // lng: data.customerLocation.longitude,
+      lat: 23.32530052490749,
+      lng: 88.32263019095298,
+    };
+  }, [data]);
+
+  const deliveryBoy = useMemo(() => {
+    if (!data) return null;
+    return {
+      // lat: data.deliveryBoyLocation.latitude,
+      // lng: data.deliveryBoyLocation.longitude,
+      lat: 23.31892504101475,
+      lng: 88.31868073742328,
+    };
+  }, [data]);
+
+  // ✅ Conditional rendering AFTER hooks
+  if (!data) {
+    return <p>Loading map...</p>;
+  }
+console.log("data",data);
 
   return (
-    <div style={{ width: containerStyle.width, height: containerStyle.height }}>
-      <MapContainer
-        center={customer}
-        zoom={13}
-        style={containerStyle}
-        scrollWheelZoom={true}
-      >
-        {/* OpenStreetMap base layer */}
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors'
-        />
+    <MapContainer
+      center={deliveryBoy}
+      zoom={13}
+      style={containerStyle}
+      scrollWheelZoom
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution="&copy; OpenStreetMap contributors"
+      />
 
-        {/* Restaurant Marker */}
-        <Marker position={restaurant} icon={restaurantIcon}>
-          <Popup>Restaurant</Popup>
-        </Marker>
+      <Marker position={restaurant} icon={restaurantIcon}>
+        <Popup>Restaurant</Popup>
+      </Marker>
 
-        {/* Customer Marker */}
-        <Marker position={customer} icon={customerIcon}>
-          <Popup>Customer</Popup>
-        </Marker>
+      <Marker position={customer} icon={customerIcon}>
+        <Popup>Customer</Popup>
+      </Marker>
 
-        {/* Delivery Boy Marker */}
-        {data && (
-          <Marker
-            position={{ lat: data.latitude, lng: data.longitude }}
-            icon={deliveryIcon}
-          >
-            <Popup>Delivery Boy</Popup>
-          </Marker>
-        )}
+      <Marker position={deliveryBoy} icon={deliveryIcon}>
+        <Popup>Delivery Boy</Popup>
+      </Marker>
 
-        {/* Route Line */}
-        <Polyline
-          positions={[restaurant, data || restaurant, customer]}
-          pathOptions={{ color: "blue", weight: 4, opacity: 0.7 }}
-        />
-      </MapContainer>
-    </div>
+      <Polyline
+        positions={[restaurant, deliveryBoy, customer]}
+        pathOptions={{ color: "blue", weight: 4 }}
+      />
+    </MapContainer>
   );
 };
 

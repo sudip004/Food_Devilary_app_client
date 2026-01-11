@@ -14,13 +14,13 @@ const UserStore = create(
             setUserStoreTotal: (total) => set({ userStoreTotal: total }),
 
             logout: async() =>{
-                await axios.post('http://localhost:8080/api/logout', {}, { withCredentials: true });
+                await axios.post(`${import.meta.env.VITE_BASE_URL}/logout`, {}, { withCredentials: true });
                 set({ user: null });
             },
 
             fetchUser: async () => {
                 try {
-                    const response = await axios.get('http://localhost:8080/api/me', { withCredentials: true });
+                    const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true });
                     set({ user: response.data });
                 } catch (error) {
                     set({ user: null });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo,useRef } from "react";
 import "./payment.css";
 import UserStore from "../../store/UserStore";
 import axios from "axios";
@@ -11,6 +11,7 @@ const PaymentPage = () => {
   const [cart, setCart] = useState([]);
   const { user, totaluserStoreTotal } = UserStore();
   const [showbtn, setShowbtn] = useState(true);
+  const location = useRef({ latitude: null, longitude: null });
   const [adrress, setAddress] = useState({
     houseNo: "",
     street: "",
@@ -31,6 +32,37 @@ const PaymentPage = () => {
     setFullAddress(fullAddress);
     setDoneAddress(true);
   }
+
+
+  // ==========================Location Update======================
+
+  useEffect(() => {
+    if (!navigator.geolocation) {
+      console.error("Geolocation not supported");
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+
+        location.current = {
+          latitude,
+          longitude
+        };
+
+        console.log("Location stored in ref:", location.current);
+      },
+      (err) => {
+        console.error("Geolocation error:", err.message);
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 30000,
+        maximumAge: 10000
+      }
+    );
+  }, []);
 
 
   useEffect(() => {
@@ -70,7 +102,7 @@ const PaymentPage = () => {
 
 
   const handlePayment = async () => {
-  
+
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/create-order`,
@@ -108,6 +140,9 @@ const PaymentPage = () => {
                 razorpay_payment_id: response.razorpay_payment_id,
                 razorpay_order_id: response.razorpay_order_id,
                 razorpay_signature: response.razorpay_signature,
+                customerLocation:location.current,
+                restaurantLocation:{ latitude: 22.963, longitude: 88.437 },
+                deliveryBoyLocation:{latitude: null, longitude: null}
               },
               { withCredentials: true }
             );
@@ -174,7 +209,7 @@ const PaymentPage = () => {
                 checked={paymentMethod === "cod"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
-                🚚 Cash on Delivery
+              🚚 Cash on Delivery
             </label>
             <label>
               <input
@@ -183,7 +218,7 @@ const PaymentPage = () => {
                 checked={paymentMethod === "Netbanking"}
                 onChange={(e) => setPaymentMethod(e.target.value)}
               />
-                🏦 Netbanking
+              🏦 Netbanking
             </label>
           </div>
         </div>

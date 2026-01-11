@@ -1,0 +1,159 @@
+:root {
+  --main: #212121;
+  --gold-finger: #F2BD12;
+  --eye-ball: #FFFDF7;
+  --hint-yellow: #FCF1CC;
+  --pure-white: #FFF;
+}
+
+/* Layout */
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background: var(--eye-ball);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background: var(--main);
+  color: var(--pure-white);
+  padding: 20px;
+}
+
+.logo {
+  color: var(--gold-finger);
+  margin-bottom: 30px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 12px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.sidebar li.active,
+.sidebar li:hover {
+  background: var(--gold-finger);
+  color: var(--main);
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  padding: 25px;
+}
+
+.title {
+  margin-bottom: 20px;
+  color: var(--main);
+}
+
+/* Table */
+.table-wrapper {
+  overflow-x: auto;
+  background: var(--pure-white);
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.order-table th {
+  background: var(--hint-yellow);
+  padding: 14px;
+  text-align: left;
+}
+
+.order-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Select */
+select {
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* Status */
+.status.cooking {
+  background: var(--hint-yellow);
+}
+
+.status.delivered {
+  background: #d4f5d4;
+}
+
+/* Payment */
+.paid {
+  color: green;
+  font-weight: bold;
+}
+
+.pending {
+  color: red;
+  font-weight: bold;
+}
+
+/* Order ID */
+.order-id {
+  font-size: 12px;
+  color: #666;
+}
+
+.order-row {
+  cursor: pointer;
+}
+
+.items-row td {
+  background: #fafafa;
+}
+
+.items-box {
+  padding: 12px;
+  background: var(--hint-yellow);
+  border-radius: 8px;
+}
+
+.items-box ul {
+  margin-top: 8px;
+  padding-left: 18px;
+}
+
+.items-box li {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+
+/* Mobile */
+@media (max-width: 980px) {
+  .admin-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .main-content {
+    padding: 12px;
+  }
+
+  .order-table {
+    min-width: 700px;
+  }
+}

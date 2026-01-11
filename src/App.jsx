@@ -8,9 +8,13 @@ import CartPage from './pages/Cart/Cart';
 import PaymentPage from './pages/payment/PaymentPage';
 import Signup from './pages/cradintials/Signup';
 import History from './pages/History/History';
+import Admin from './ADMIN/Admin';
 
 
 const App = () => {
+
+
+ 
   return (
     <div className='main-app-wrapper'>
       <Toaster
@@ -51,6 +55,7 @@ const App = () => {
         <Route path='/payment' element={<PaymentPage/>} />
         <Route path='/login' element={<Signup/>} />
         <Route path='/history' element={<History/>} />
+        <Route path='/admin' element={<Admin/>} />
       </Routes>
     </div>
   )

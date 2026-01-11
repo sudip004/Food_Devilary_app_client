@@ -44,8 +44,8 @@ const Signup = () => {
             password: userData.password
         }, { withCredentials: true })
         
-       const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
-       setuser(curUser.data);
+      const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
+      setuser(curUser.data);
        navigate('/')
         
     }

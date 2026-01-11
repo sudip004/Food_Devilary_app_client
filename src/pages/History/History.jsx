@@ -24,9 +24,9 @@ const History = () => {
 
   return (
     <div className="history-container">
-       <div className="back-btn"
-          onClick={() => navigate("/")}
-        ><i class="fa-solid fa-left-long back-arrow"></i> Back</div>
+      <div className="back-btn"
+        onClick={() => navigate("/")}
+      ><i class="fa-solid fa-left-long back-arrow"></i> Back</div>
       <h1 className="page-title">Your Orders</h1>
 
       {orders.length === 0 ? (
@@ -87,13 +87,12 @@ const History = () => {
                 </ul>
               </div>
             </div>
-            {/* Feed Back by Star Ratting and comment and show helpline number ui and Deleverry boy Number */}
 
             {/* Feedback, Helpline, and Delivery Info Section */}
             <div className="feedback-section">
               <h4>Rate Your Order Experience</h4>
 
-              {/* ⭐ Star Rating */}
+              {/*  Star Rating */}
               <div className="star-rating">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
@@ -112,7 +111,7 @@ const History = () => {
                 ))}
               </div>
 
-              {/* 💬 Feedback comment */}
+              {/*  Feedback comment */}
               <textarea
                 placeholder="Write your feedback..."
                 value={order.comment || ""}
@@ -127,7 +126,7 @@ const History = () => {
                 className="feedback-input"
               />
 
-              {/* ☎️ Helpline and Delivery Contact */}
+              {/* Helpline and Delivery Contact */}
               <div className="support-info">
                 <div className="info-card">
                   <h5>📞 Helpline</h5>
@@ -141,7 +140,7 @@ const History = () => {
                 </div>
               </div>
 
-              {/* ✅ Submit Feedback */}
+              {/*  Submit Feedback */}
               <button
                 className="submit-feedback"
                 onClick={async () => {
@@ -164,11 +163,24 @@ const History = () => {
 
             {/* End here Feed back */}
 
-            <DeliveryMap orderId={order.id} />
+            <DeliveryMap
+              orderId={order.id}
+              onDelivered={() => {
+                setOrders((prev) =>
+                  prev.map((o) =>
+                    o.id === order.id
+                      ? { ...o, orderStatus: "Delivered" }
+                      : o
+                  )
+                );
+              }}
+            />
+            
+
           </div>
         ))
       )}
-    {/*================================================================================================  */}
+      {/*================================================================================================  */}
       <div className="order-history">
         <h2>Order History</h2>
         {orders
