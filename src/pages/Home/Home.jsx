@@ -74,7 +74,7 @@ const Home = () => {
             menuSection.scrollIntoView({ behavior: "smooth" });
         }
         setNav("home");
-    }, [user]);
+    }, []);
 
     useEffect(() => {
         const fetchCartItemsNumber = async () => {
@@ -223,9 +223,15 @@ const Home = () => {
                             </Link>
                             
                         </div>
-                        {
-                            !loginbtnvisible && <button className='signinbtn' onClick={() => navigate("/login")}>Sign-in</button>
-                        }
+                        {!user && (
+  <button
+    className="signinbtn"
+    onClick={() => navigate("/login")}
+  >
+    Sign-in
+  </button>
+)}
+
                        <Link to={"/history"}>
                                 <i class="fa-brands fa-first-order bag-icon"></i>
                             </Link>
