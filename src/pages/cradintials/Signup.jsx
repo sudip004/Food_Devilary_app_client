@@ -50,15 +50,15 @@ const Signup = () => {
         
     }
 
-    useEffect(() => {
-        console.log("call use");
+    // useEffect(() => {
+    //     console.log("call use");
         
-        if(!user){
-            console.log("call underrr");
+    //     if(!user){
+    //         console.log("call underrr");
             
-            fetchUser();
-        }
-    }, [user]);
+    //         fetchUser();
+    //     }
+    // }, [user]);
     
 
     return (
