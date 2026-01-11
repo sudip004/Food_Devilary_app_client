@@ -209,16 +209,7 @@ const Home = () => {
                     >
                         About Us
                     </Link>
-                    <Link className={nav === "contact" ? "active" : ""}
-                        {/* onClick={() => {
-                            const menuSection = document.getElementById("contact");
-                            if (menuSection) {
-                                menuSection.scrollIntoView({ behavior: "smooth" });
-                            }
-                            setNav("contact");
-                            setBar(false);
-                        }} */}
-                    to={"/admin"}
+                    <Link  to={"/admin"}
                     >
                         Admin
                     </Link>
