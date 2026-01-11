@@ -3,8 +3,11 @@ import axios from 'axios';
 
 const UserStore = create((set) => ({
   user: null,
+   userStoreTotal: 0,
 
   setuser: (userData) => set({ user: userData }),
+   setUserStoreTotal: (total) =>
+    set({ userStoreTotal: total }),
 
   logout: async () => {
     await axios.post(
