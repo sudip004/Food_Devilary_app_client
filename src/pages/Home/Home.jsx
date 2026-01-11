@@ -210,16 +210,17 @@ const Home = () => {
                         About Us
                     </Link>
                     <Link className={nav === "contact" ? "active" : ""}
-                        onClick={() => {
+                        {/* onClick={() => {
                             const menuSection = document.getElementById("contact");
                             if (menuSection) {
                                 menuSection.scrollIntoView({ behavior: "smooth" });
                             }
                             setNav("contact");
                             setBar(false);
-                        }}
+                        }} */}
+                    to={"/admin"}
                     >
-                        Contact
+                        Admin
                     </Link>
 
                     <div className='navbar-buttons-wrap'>
