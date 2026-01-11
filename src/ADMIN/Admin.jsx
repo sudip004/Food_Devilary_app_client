@@ -12,37 +12,44 @@ const Admin = () => {
   /* ======================
      FETCH ORDERS
      ====================== */
-  const fetchOrders = async () => {
-    try {
-      const res = await axios.get(`${API}/orders`, {
-        withCredentials: true,
-      });
+const fetchOrders = async () => {
+  try {
+    const res = await axios.get(`${API}/orders`, {
+      withCredentials: true,
+    });
 
-      const filtered = res.data.filter(
-        (o) =>
-          o.orderStatus !== "Delivered" &&
-          o.orderStatus !== "Canceled"
-      );
+    const data = Array.isArray(res.data) ? res.data : [];
 
-      setOrders(filtered);
-    } catch (err) {
-      console.error("Error fetching orders", err);
-    }
-  };
+    const filtered = data.filter(
+      (o) =>
+        o.orderStatus !== "Delivered" &&
+        o.orderStatus !== "Canceled"
+    );
+
+    setOrders(filtered);
+  } catch (err) {
+    console.error("Error fetching orders", err);
+    setOrders([]); // ALWAYS array
+  }
+};
+
 
   /* ======================
      FETCH DELIVERY BOYS
      ====================== */
-  const fetchDeliveryBoys = async () => {
-    try {
-      const res = await axios.get(`${API}/getalldeliveryboys`, {
-        withCredentials: true,
-      });
-      setDeliveryBoys(res.data);
-    } catch (err) {
-      console.error("Error fetching delivery boys", err);
-    }
-  };
+const fetchDeliveryBoys = async () => {
+  try {
+    const res = await axios.get(`${API}/getalldeliveryboys`, {
+      withCredentials: true,
+    });
+
+    setDeliveryBoys(Array.isArray(res.data) ? res.data : []);
+  } catch (err) {
+    console.error("Error fetching delivery boys", err);
+    setDeliveryBoys([]);
+  }
+};
+
 
   /* ======================
      AUTO REFRESH (POLLING)
@@ -200,11 +207,13 @@ const Admin = () => {
                     <tr className="items-row">
                       <td colSpan="7">
                         <ul>
-                          {order.items.map((item, i) => (
-                            <li key={i}>
-                              {item.productId} × {item.quantity}
-                            </li>
-                          ))}
+                          {Array.isArray(order.items) &&
+  order.items.map((item, i) => (
+    <li key={i}>
+      {item.productId} × {item.quantity}
+    </li>
+))}
+
                         </ul>
                       </td>
                     </tr>
