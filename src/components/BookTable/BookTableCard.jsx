@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./BookTableCard.css";
+import { motion } from "framer-motion";
 
 
 const timeSlots = [
@@ -51,12 +52,31 @@ const BookTableCard = ({ onSubmit }) => {
   };
 
   return (
-    <div className="book-card">
-      <div className="book-image">
+    <motion.div 
+      className="book-card"
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6 }}
+      viewport={{ once: true }}
+    >
+      <motion.div 
+        className="book-image"
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        viewport={{ once: true }}
+      >
         <img src={'https://cdn.mos.cms.futurecdn.net/bCoPusuftCjcU9F8HiybQg.jpg'} alt="Restaurant interior" />
-      </div>
+      </motion.div>
 
-      <form className="book-form" onSubmit={handleSubmit}>
+      <motion.form 
+        className="book-form" 
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, x: 30 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true }}
+      >
         <h3>Book Your Table</h3>
         <p className="muted">Reserve a table quickly — we'll confirm availability.</p>
 
@@ -127,10 +147,16 @@ const BookTableCard = ({ onSubmit }) => {
         {error && <div className="error">{error}</div>}
 
         <div className="actions">
-          <button type="submit" className="primary" disabled={submitting}>
+          <motion.button 
+            type="submit" 
+            className="primary" 
+            disabled={submitting}
+            whileHover={{ scale: 1.05, boxShadow: "0 10px 28px rgba(255, 102, 0, 0.3)" }}
+            whileTap={{ scale: 0.98 }}
+          >
             {submitting ? "Requesting..." : "Request Table"}
-          </button>
-          <button
+          </motion.button>
+          <motion.button
             type="button"
             className="ghost"
             onClick={() => {
@@ -140,16 +166,18 @@ const BookTableCard = ({ onSubmit }) => {
               setNotes("");
               setError("");
             }}
+            whileHover={{ scale: 1.02, backgroundColor: "#f3f4f6" }}
+            whileTap={{ scale: 0.98 }}
           >
             Reset
-          </button>
+          </motion.button>
         </div>
 
         <p className="help">
-          Need immediate help? Call <strong>+91 1800-123-4567</strong>
+          <i className="fa-solid fa-phone"></i> Need immediate help? Call <strong>+91 1800-123-4567</strong>
         </p>
-      </form>
-    </div>
+      </motion.form>
+    </motion.div>
   );
 };
 

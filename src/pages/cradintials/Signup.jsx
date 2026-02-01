@@ -2,20 +2,18 @@ import React, { useEffect, useState } from "react";
 import "./Signup.css";
 import axios from "axios";
 import UserStore from "../../store/UserStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const Signup = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const [isLogin, setIsLogin] = useState(true);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
 
     //State to hold form data
     const {user,fetchUser,setuser} = UserStore();
-    // const user = UserStore((state) => state.user);
-    // const fetchUser = UserStore((state) => state.fetchUser);
-    // const setuser = UserStore((state) => state.setuser);
     
-    
-
     const [userData, setUserData] = useState({
         username: "",
         email: "",
@@ -24,31 +22,82 @@ const Signup = () => {
 
     const handelSignUp = async(e) => {
         e.preventDefault();
-        // Handle signup logic here
-        const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
-            username: userData.username,
-            email: userData.email,
-            password: userData.password
-        }, { withCredentials: true })
-        console.log(res.data);
-        setIsLogin(pre=>!pre);
+        setError("");
+        setLoading(true);
         
+        try {
+            if (!userData.username.trim()) {
+                setError("Username is required");
+                return;
+            }
+            if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+                setError("Please enter a valid email");
+                return;
+            }
+            if (!userData.password.trim() || userData.password.length < 3) {
+                setError("Password must be at least 3 characters");
+                return;
+            }
+
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/signup`, {
+                username: userData.username,
+                email: userData.email,
+                password: userData.password
+            }, { withCredentials: true })
+            
+            console.log(res.data);
+            setUserData({ username: "", email: "", password: "" });
+            setIsLogin(true);
+        } catch(err) {
+            setError(err.response?.data?.message || "Signup failed. Please try again.");
+            console.error("Signup error:", err);
+        } finally {
+            setLoading(false);
+        }
     }
    
 
     const handelLogin = async(e) => {
         e.preventDefault();
-        // Handle login logic here
-        const token = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, {
-            email: userData.email,
-            password: userData.password
-        }, { withCredentials: true })
+        setError("");
+        setLoading(true);
         
-      const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
-      setuser(curUser.data);
-       navigate('/')
-        
+        try {
+            if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+                setError("Please enter a valid email");
+                return;
+            }
+            if (!userData.password.trim()) {
+                setError("Password is required");
+                return;
+            }
+
+            const token = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, {
+                email: userData.email,
+                password: userData.password
+            }, { withCredentials: true })
+            
+            const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
+            setuser(curUser.data);
+            setUserData({ username: "", email: "", password: "" });
+            navigate('/home')
+        } catch(err) {
+            setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+            console.error("Login error:", err);
+        } finally {
+            setLoading(false);
+        }
     }
+
+    useEffect(() => {
+        const mode = searchParams.get("mode");
+        if (mode === "signup") {
+            setIsLogin(false);
+        }
+        if (mode === "login") {
+            setIsLogin(true);
+        }
+    }, [searchParams]);
 
     useEffect(() => {
         console.log("call use");
@@ -63,88 +112,152 @@ const Signup = () => {
 
     return (
         <div className="auth-container">
+            <div className="animated-background"></div>
             <div className="auth-box">
                 <div className="left-side">
-
-                    {/* Example usage in React */}
-                    <img
-                        alt="blinking eyes"
-                        src={
-                            "data:image/svg+xml;utf8," +
-                            "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'>" +
-                            "<circle cx='50' cy='50' r='30' fill='%23ffffff'/>" +
-                            "<circle cx='150' cy='50' r='30' fill='%23ffffff'/>" +
-                            "<circle cx='50' cy='50' r='12' fill='%23b080ff'/>" +
-                            "<circle cx='150' cy='50' r='12' fill='%23b080ff'/>" +
-                            // left eyelid (animates height to create blink)
-                            "<rect x='20' y='20' width='60' height='60' rx='30' fill='%230a0610'>" +
-                            "<animate attributeName='height' values='60;0;60' dur='3s' repeatCount='indefinite' />" +
-                            "</rect>" +
-                            // right eyelid (slightly offset)
-                            "<rect x='120' y='20' width='60' height='60' rx='30' fill='%230a0610'>" +
-                            "<animate attributeName='height' values='60;0;60' dur='3s' begin='0.15s' repeatCount='indefinite' />" +
-                            "</rect>" +
-                            "</svg>"
-                        }
-                    />
-
-
-
+                    <div className="left-bg-animation">
+                        <div className="orb orb-1"></div>
+                        <div className="orb orb-2"></div>
+                        <div className="orb orb-3"></div>
+                    </div>
+                    <div className="grid-pattern"></div>
+                    <div className="left-content">
+                        <div className="floating-card card-1">
+                            <div className="card-icon">📱</div>
+                            <p>Easy Ordering</p>
+                        </div>
+                        <div className="floating-card card-2">
+                            <div className="card-icon">🚚</div>
+                            <p>Fast Delivery</p>
+                        </div>
+                        <div className="floating-card card-3">
+                            <div className="card-icon">💰</div>
+                            <p>Great Deals</p>
+                        </div>
+                        <div className="center-content">
+                            <div className="main-illustration">
+                                <div className="food-bowl">
+                                    <div className="bowl-item item-1">🍕</div>
+                                    <div className="bowl-item item-2">🍔</div>
+                                    <div className="bowl-item item-3">🍜</div>
+                                    <div className="bowl-shine"></div>
+                                </div>
+                            </div>
+                            <h1 className="left-title">
+                                {isLogin ? "Welcome Back!" : "Join Us Today!"}
+                            </h1>
+                            <p className="left-subtitle">
+                                {isLogin 
+                                    ? "Experience the best food delivery service" 
+                                    : "Order delicious food from your favorite restaurants"}
+                            </p>
+                            <div className="feature-list">
+                                <div className="feature-item">
+                                    <div className="feature-badge">✓</div>
+                                    <span>Fastest Delivery</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-badge">✓</div>
+                                    <span>Secure Payments</span>
+                                </div>
+                                <div className="feature-item">
+                                    <div className="feature-badge">✓</div>
+                                    <span>Best Prices</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="right-side">
-                    <h2 className="title">
-                        {isLogin ? "Welcome Back 👋" : "Create Account ✨"}
-                    </h2>
+                    <div className="form-container">
+                        <div className="form-header">
+                            <h2 className="title">
+                                {isLogin ? "Welcome Back 👋" : "Create Account ✨"}
+                            </h2>
+                            <p className="subtitle">
+                                {isLogin ? "Sign in to your account" : "Set up your profile"}
+                            </p>
+                        </div>
 
-                    <form className="form">
-                        {!isLogin && (
-                            <input
-                                type="text"
-                                placeholder="UserName"
-                                className="input-field"
-                                onChange={
-                                    (e)=>setUserData((pre)=>({...pre, username:e.target.value}))
-                                }
-                            />
-                        )}
-                        <input type="email" placeholder="Email" 
-                        className="input-field"
-                        onChange={
-                                    (e)=>setUserData((pre)=>({...pre, email:e.target.value}))
-                                }
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            className="input-field"
-                            onChange={
-                                (e)=>setUserData((pre)=>({...pre, password:e.target.value}))
+                        <form className="form">
+                            {!isLogin && (
+                                <div className="form-group">
+                                    <label htmlFor="username">Username</label>
+                                    <input
+                                        id="username"
+                                        type="text"
+                                        placeholder="Enter your username"
+                                        className="input-field"
+                                        onChange={
+                                            (e)=>setUserData((pre)=>({...pre, username:e.target.value}))
+                                        }
+                                    />
+                                    <div className="input-border"></div>
+                                </div>
+                            )}
+                            <div className="form-group">
+                                <label htmlFor="email">Email Address</label>
+                                <input 
+                                    id="email"
+                                    type="email" 
+                                    placeholder="Enter your email" 
+                                    className="input-field"
+                                    onChange={
+                                        (e)=>setUserData((pre)=>({...pre, email:e.target.value}))
+                                    }
+                                />
+                                <div className="input-border"></div>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    id="password"
+                                    type="password"
+                                    placeholder="Enter your password"
+                                    className="input-field"
+                                    onChange={
+                                        (e)=>setUserData((pre)=>({...pre, password:e.target.value}))
+                                    }
+                                />
+                                <div className="input-border"></div>
+                            </div>
+
+                            {error && (
+                                <div className="error-box">
+                                    <span className="error-icon">⚠</span>
+                                    <div>
+                                        <p className="error-title">Authentication Failed</p>
+                                        <p className="error-message">{error}</p>
+                                    </div>
+                                </div>
+                            )}
+
+                            {
+                                isLogin ? (
+                                    <button type="submit" className="btn btn-primary" onClick={handelLogin} disabled={loading}>
+                                        <span>{loading ? "Signing in..." : "Sign In"}</span>
+                                        <span className="btn-icon">→</span>
+                                    </button>
+                                ) : (
+                                    <button type="submit" className="btn btn-primary" onClick={handelSignUp} disabled={loading}>
+                                        <span>{loading ? "Creating account..." : "Create Account"}</span>
+                                        <span className="btn-icon">→</span>
+                                    </button>
+                                )
                             }
-                        />
+                        </form>
 
-                        {
-                            isLogin ? (
-                                <button type="submit" className="btn" onClick={handelLogin}>
-                                    Login
-                                </button>
-                            ) : (
-                                <button type="submit" className="btn" onClick={handelSignUp}>
-                                    Sign Up
-                                </button>
-                            )
-                        }
-                    </form>
-
-                    <p className="toggle-text">
-                        {isLogin ? "Don’t have an account?" : "Already have an account?"}
-                        <span
-                            className="toggle-link"
-                            onClick={() => setIsLogin(!isLogin)}
-                        >
-                            {isLogin ? " Sign up" : " Login"}
-                        </span>
-                    </p>
+                        <p className="toggle-text">
+                            {isLogin ? "Don't have an account?" : "Already have an account?"}
+                            <span
+                                className="toggle-link"
+                                onClick={() => setIsLogin(!isLogin)}
+                            >
+                                {isLogin ? " Sign up" : " Login"}
+                            </span>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>

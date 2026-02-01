@@ -347,38 +347,77 @@ const Home = () => {
                 <p className='head'>Our Srevices</p>
                 <h1 className='head1'>What We Provide</h1>
                 <div className='home-sec-two-wrapper'>
-                    <div className='home-sec-two-card'>
+                    <motion.div 
+                        className='home-sec-two-card'
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0 }}
+                        viewport={{ once: true }}
+                        whileHover={{ y: -8, scale: 1.02 }}
+                    >
                         <img src={orderimg} alt="" />
                         <h3>Easy To Order</h3>
                         <p>You Can need a few steps to Order</p>
-                    </div>
-                    <div className='home-sec-two-card'>
+                    </motion.div>
+                    <motion.div 
+                        className='home-sec-two-card'
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        viewport={{ once: true }}
+                        whileHover={{ y: -8, scale: 1.02 }}
+                    >
                         <img src={delivalry} alt="" />
                         <h3>Easy To Delivery</h3>
                         <p>You Can need a few steps to Order</p>
-                    </div>
-                    <div className='home-sec-two-card'>
+                    </motion.div>
+                    <motion.div 
+                        className='home-sec-two-card'
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        whileHover={{ y: -8, scale: 1.02 }}
+                    >
                         <img src={qualityimg} alt="" />
                         <h3>Easy To Book Table </h3>
                         <p>You Can need a few steps to Order</p>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
             {/* section for Cart 3---- */}
             <section className="sec-three-wrapper" id='menu-section'>
                 <p className='head'>Menu</p>
-                <h1 className="head1">The Most Popular</h1>
+                <h1 className="head1">
+                    <i className="fa-solid fa-star"></i>
+                    The Most Popular
+                    <i className="fa-solid fa-star"></i>
+                </h1>
                 <div className="sec-three-card-container">
 
                     {
                         products.slice(0, 8).map((item, i) => (
-                            <div className="item-card" key={i}>
+                            <motion.div 
+                                className="item-card" 
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: i * 0.05 }}
+                                viewport={{ once: true }}
+                                whileHover={{ y: -10 }}
+                            >
                                 <img src={item.image} alt="" />
                                 <h3>{item.name} </h3>
                                 <p>₹ {item.price}</p>
-                                <button onClick={() => handelAddToCart(item.id)}>ADD TO CART</button>
-                            </div>
+                                <motion.button 
+                                    onClick={() => handelAddToCart(item.id)}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    ADD TO CART
+                                </motion.button>
+                            </motion.div>
                         ))
                     }
 
@@ -387,17 +426,35 @@ const Home = () => {
 
             {/* Tranding Items */}
             <section className="sec-three-wrapper" id='menu-section'>
-                <h1 className="head1">Tranding Items</h1>
+                <h1 className="head1">
+                    <i className="fa-solid fa-fire"></i>
+                    Trending Items
+                    <i className="fa-solid fa-fire"></i>
+                </h1>
                 <div className="sec-three-card-container">
 
                     {
                         products.slice(9, 16).map((item, i) => (
-                            <div className="item-card" key={i}>
+                            <motion.div 
+                                className="item-card" 
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: i * 0.05 }}
+                                viewport={{ once: true }}
+                                whileHover={{ y: -10 }}
+                            >
                                 <img src={item.image} alt="" />
                                 <h3>{item.name} </h3>
                                 <p>₹ {item.price}</p>
-                                <button onClick={() => handelAddToCart(item.id)}>ADD TO CART</button>
-                            </div>
+                                <motion.button 
+                                    onClick={() => handelAddToCart(item.id)}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    ADD TO CART
+                                </motion.button>
+                            </motion.div>
                         ))
                     }
 
@@ -406,17 +463,35 @@ const Home = () => {
 
             {/* Bengali Thali Speatials */}
             <section className="sec-three-wrapper" id='menu-section'>
-                <h1 className="head1">Bengali Thali</h1>
+                <h1 className="head1">
+                    <i className="fa-solid fa-heart"></i>
+                    Bengali Thali
+                    <i className="fa-solid fa-heart"></i>
+                </h1>
                 <div className="sec-three-card-container">
 
                     {
                         products.slice(17, 21).map((item, i) => (
-                            <div className="item-card" key={i}>
+                            <motion.div 
+                                className="item-card" 
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: i * 0.05 }}
+                                viewport={{ once: true }}
+                                whileHover={{ y: -10 }}
+                            >
                                 <img src={item.image} alt="" />
                                 <h3>{item.name} </h3>
                                 <p>₹ {item.price}</p>
-                                <button onClick={() => handelAddToCart(item.id)}>ADD TO CART</button>
-                            </div>
+                                <motion.button 
+                                    onClick={() => handelAddToCart(item.id)}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    ADD TO CART
+                                </motion.button>
+                            </motion.div>
                         ))
                     }
 
@@ -425,17 +500,35 @@ const Home = () => {
 
             {/* Soft Drinks */}
             <section className="sec-three-wrapper" id='menu-section'>
-                <h1 className="head1">Soft Drinks</h1>
+                <h1 className="head1">
+                    <i className="fa-solid fa-droplet"></i>
+                    Soft Drinks
+                    <i className="fa-solid fa-droplet"></i>
+                </h1>
                 <div className="sec-three-card-container">
 
                     {
                         products.slice(22, 27).map((item, i) => (
-                            <div className="item-card" key={i}>
+                            <motion.div 
+                                className="item-card" 
+                                key={i}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: i * 0.05 }}
+                                viewport={{ once: true }}
+                                whileHover={{ y: -10 }}
+                            >
                                 <img src={item.image} alt="" />
                                 <h3>{item.name} </h3>
                                 <p>₹ {item.price}</p>
-                                <button onClick={() => handelAddToCart(item.id)}>ADD TO CART</button>
-                            </div>
+                                <motion.button 
+                                    onClick={() => handelAddToCart(item.id)}
+                                    whileHover={{ scale: 1.08 }}
+                                    whileTap={{ scale: 0.95 }}
+                                >
+                                    ADD TO CART
+                                </motion.button>
+                            </motion.div>
                         ))
                     }
 
@@ -490,14 +583,50 @@ const Home = () => {
             </section>
 
             {/* NewsLetter Section */}
-            <section className="sec-newsletter-con" id='contact'>
-                <h2>Subscribe Our Newsletter</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur id veniam inventore doloribus culpa sint tenetur laboriosam veritatis, laborum alias.</p>
-                <div className="newsletter-input-con">
-                    <input type="email" placeholder='Enter your email' />
-                    <button>Subscribe</button>
-                </div>
-            </section>
+            <motion.section 
+                className="sec-newsletter-con" 
+                id='contact'
+                initial={{ opacity: 0, y: 60 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                viewport={{ once: true }}
+            >
+                <motion.h2
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                    viewport={{ once: true }}
+                >
+                    <i className="fa-solid fa-envelope"></i> Subscribe Our Newsletter
+                </motion.h2>
+                <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    viewport={{ once: true }}
+                >
+                    Get the latest updates on our new dishes, exclusive offers, and culinary tips delivered straight to your inbox.
+                </motion.p>
+                <motion.div 
+                    className="newsletter-input-con"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                    viewport={{ once: true }}
+                >
+                    <motion.input 
+                        type="email" 
+                        placeholder='Enter your email'
+                        whileFocus={{ boxShadow: "0 0 20px rgba(255, 102, 0, 0.3)" }}
+                    />
+                    <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <i className="fa-solid fa-paper-plane"></i>
+                    </motion.button>
+                </motion.div>
+            </motion.section>
 
             {/* Section Footer */}
             <section className="sec-footer">

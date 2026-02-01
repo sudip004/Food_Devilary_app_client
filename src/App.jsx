@@ -9,6 +9,7 @@ import PaymentPage from './pages/payment/PaymentPage';
 import Signup from './pages/cradintials/Signup';
 import History from './pages/History/History';
 import Admin from './ADMIN/Admin';
+import LandingPage from './pages/landingpage/landingPage';
 
 
 const App = () => {
@@ -50,7 +51,8 @@ const App = () => {
         }}
       />
       <Routes>
-        <Route path='/' element={<Home/>} />
+        <Route path='/home' element={<Home/>} />
+        <Route path='/' element={<LandingPage />} />
         <Route path='/cart' element={<CartPage/>} />
         <Route path='/payment' element={<PaymentPage/>} />
         <Route path='/login' element={<Signup/>} />
