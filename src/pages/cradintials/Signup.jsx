@@ -30,10 +30,10 @@ const Signup = () => {
                 setError("Username is required");
                 return;
             }
-            if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-                setError("Please enter a valid email");
-                return;
-            }
+            // if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+            //     setError("Please enter a valid email");
+            //     return;
+            // }
             if (!userData.password.trim() || userData.password.length < 3) {
                 setError("Password must be at least 3 characters");
                 return;
@@ -46,7 +46,8 @@ const Signup = () => {
             }, { withCredentials: true })
             
             console.log(res.data);
-            setUserData({ username: "", email: "", password: "" });
+            // Only clear username, keep email and password for login
+            setUserData((prev) => ({ ...prev, username: "" }));
             setIsLogin(true);
         } catch(err) {
             setError(err.response?.data?.message || "Signup failed. Please try again.");
@@ -63,14 +64,14 @@ const Signup = () => {
         setLoading(true);
         
         try {
-            if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-                setError("Please enter a valid email");
-                return;
-            }
-            if (!userData.password.trim()) {
-                setError("Password is required");
-                return;
-            }
+            // if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
+            //     setError("Please enter a valid email");
+            //     return;
+            // }
+            // if (!userData.password.trim()) {
+            //     setError("Password is required");
+            //     return;
+            // }
 
             const token = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, {
                 email: userData.email,
