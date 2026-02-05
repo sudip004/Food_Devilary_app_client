@@ -10,6 +10,7 @@ const Signup = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showServerNotice, setShowServerNotice] = useState(false);
 
     //State to hold form data
     const {user,fetchUser,setuser} = UserStore();
@@ -24,10 +25,12 @@ const Signup = () => {
         e.preventDefault();
         setError("");
         setLoading(true);
+        setShowServerNotice(true);
         
         try {
             if (!userData.username.trim()) {
                 setError("Username is required");
+                setShowServerNotice(false);
                 return;
             }
             // if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
@@ -36,6 +39,7 @@ const Signup = () => {
             // }
             if (!userData.password.trim() || userData.password.length < 3) {
                 setError("Password must be at least 3 characters");
+                setShowServerNotice(false);
                 return;
             }
 
@@ -49,9 +53,11 @@ const Signup = () => {
             // Only clear username, keep email and password for login
             setUserData((prev) => ({ ...prev, username: "" }));
             setIsLogin(true);
+            setShowServerNotice(false);
         } catch(err) {
             setError(err.response?.data?.message || "Signup failed. Please try again.");
             console.error("Signup error:", err);
+            setShowServerNotice(false);
         } finally {
             setLoading(false);
         }
@@ -62,6 +68,7 @@ const Signup = () => {
         e.preventDefault();
         setError("");
         setLoading(true);
+        setShowServerNotice(true);
         
         try {
             // if (!userData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
@@ -81,10 +88,12 @@ const Signup = () => {
             const curUser = await axios.get(`${import.meta.env.VITE_BASE_URL}/me`, { withCredentials: true })
             setuser(curUser.data);
             setUserData({ username: "", email: "", password: "" });
+            setShowServerNotice(false);
             navigate('/home')
         } catch(err) {
             setError(err.response?.data?.message || "Invalid credentials. Please try again.");
             console.error("Login error:", err);
+            setShowServerNotice(false);
         } finally {
             setLoading(false);
         }
@@ -234,16 +243,34 @@ const Signup = () => {
                                 </div>
                             )}
 
+                            {showServerNotice && loading && (
+                                <div className="server-notice-box">
+                                    <span className="notice-icon">⏳</span>
+                                    <div>
+                                        <p className="notice-title">Please Wait</p>
+                                        <p className="notice-message">Onrender server is starting up. This may take 30-50 seconds...</p>
+                                    </div>
+                                </div>
+                            )}
+
                             {
                                 isLogin ? (
                                     <button type="submit" className="btn btn-primary" onClick={handelLogin} disabled={loading}>
                                         <span>{loading ? "Signing in..." : "Sign In"}</span>
-                                        <span className="btn-icon">→</span>
+                                        {loading ? (
+                                            <span className="btn-spinner">⟳</span>
+                                        ) : (
+                                            <span className="btn-icon">→</span>
+                                        )}
                                     </button>
                                 ) : (
                                     <button type="submit" className="btn btn-primary" onClick={handelSignUp} disabled={loading}>
                                         <span>{loading ? "Creating account..." : "Create Account"}</span>
-                                        <span className="btn-icon">→</span>
+                                        {loading ? (
+                                            <span className="btn-spinner">⟳</span>
+                                        ) : (
+                                            <span className="btn-icon">→</span>
+                                        )}
                                     </button>
                                 )
                             }
